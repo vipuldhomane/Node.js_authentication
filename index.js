@@ -9,17 +9,17 @@ const session = require("express-session");
 const flash = require("express-flash");
 const app = express();
 
-// *******************    Set Template Engine  ***********************************//
+//Set Template Engine
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 console.log(app.get("view engine"));
 
-// ************************  Database Connection  **********************************//
+//Database Connection
 const { connectMonggose } = require("./app/database/db");
 connectMonggose();
 
-//*****************************  Session config   ************************************//
+//Session config
 app.use(
   session({
     secret: process.env.SECRET_KEY,
@@ -29,7 +29,7 @@ app.use(
   })
 );
 
-// *********************   Passport Config   ***********************************//
+//Passport Config
 const passportInit = require("./app/passport/passport");
 const passportGoogle = require("./app/passport/passport-auth-google");
 passportInit(passport);
@@ -39,7 +39,7 @@ app.use(passport.session());
 
 app.use(flash());
 
-// *************************    Assets    ****************************************//
+//Assets
 const publicPath = path.join(__dirname, "public");
 app.use(express.static(publicPath));
 app.use(express.static(__dirname + "/public"));
@@ -47,10 +47,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// ***********************************Routes ********************************//
+// Routes
 require("./routes/web")(app);
 
-// ************************   Port Start   ********************************//
+// Port Start
 const PORT = 8500;
 app.listen(PORT, () => {
   console.log(`My server start on this port ${PORT}`);
